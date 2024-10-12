@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  integrator-mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bank_account
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./backend/scripts:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
+    container_name: backend
+    networks:
+      - app-network
+    depends_on:
+      - integrator-mysql
+    ports:
+      - "5000:5000"
+
+  # frontend:
+  #   build: ./frontend
+  #   container_name: frontend
+  #   restart: always
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+
+volumes:
+  db_data:
+
+networks:
+  app-network:
+    driver: bridge

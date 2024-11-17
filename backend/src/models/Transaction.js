@@ -8,7 +8,7 @@ class Transaction {
 
     return new Promise((resolve, reject) => {
       const query =
-        "SELECT t.date_time, t.type, cus.name AS origin_name, a.account_number AS origin_account, cust.name as target_name, ac.account_number as target_account FROM transactions t LEFT JOIN accounts a ON t.origin_account_id = a.account_id LEFT JOIN customers cus ON a.customer_id = cus.customer_id LEFT JOIN accounts ac ON t.target_account_id = ac.account_id LEFT JOIN customers cust ON ac.customer_id = cust.customer_id  WHERE t.origin_account_id = ? OR t.target_account_id = ?";
+        "SELECT t.date_time, t.type, cus.name AS origin_name, a.account_number AS origin_account, cust.name as target_name, ac.account_number as target_account, t.value FROM transactions t LEFT JOIN accounts a ON t.origin_account_id = a.account_id LEFT JOIN customers cus ON a.customer_id = cus.customer_id LEFT JOIN accounts ac ON t.target_account_id = ac.account_id LEFT JOIN customers cust ON ac.customer_id = cust.customer_id  WHERE t.origin_account_id = ? OR t.target_account_id = ?";
       connection.query(query, [account_id, account_id], (err, result) => {
         if (err) return reject(err.sqlMessage);
         resolve(result);

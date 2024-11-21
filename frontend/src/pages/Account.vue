@@ -48,7 +48,10 @@
       @refreshAccount="getAccount"
     />
     <ManageBillsModal
+      :account_id="account_id"
+      :balance="balance"
       :toggleModal="toggleManageBillsModal"
+      @refreshAccount="getAccount"
       @closeModal="(v) => (toggleManageBillsModal = v)"
     />
   </div>

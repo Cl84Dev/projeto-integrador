@@ -63,6 +63,24 @@
           >
             R$ {{ transaction.value }}
           </td>
+
+          <!-- Pagamento de conta -->
+
+          <td class="text-red-600" v-if="transaction.type === 'pagamento'">
+            {{ formatDate(transaction.date_time) }}
+          </td>
+          <td
+            class="text-center text-red-600"
+            v-if="transaction.type === 'pagamento'"
+          >
+            Pagamento de Conta
+          </td>
+          <td
+            class="text-end text-red-600"
+            v-if="transaction.type === 'pagamento'"
+          >
+            R$ {{ transaction.value }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -70,7 +88,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, watch } from "vue";
 import api from "../../api";
 
 const props = defineProps(["account_id", "account_number"]);
@@ -82,7 +100,6 @@ const getTransactions = async () => {
   try {
     const response = await api.get(`/transaction/${props.account_id}`);
     transactions.value = response.data.transactions;
-    console.log(response.data.transactions);
   } catch (error) {
     console.log(error);
   }

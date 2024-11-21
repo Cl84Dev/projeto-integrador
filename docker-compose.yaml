@@ -24,17 +24,26 @@ services:
       - app-network
     depends_on:
       - integrator-mysql
+    volumes:
+      - ./backend:/app
     ports:
       - "5000:5000"
+    environment:
+      DATABASE_URL: "mysql://admin:admin@mysql:3306/bank_account"
 
-  # frontend:
-  #   build: ./frontend
-  #   container_name: frontend
-  #   restart: always
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - backend
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    volumes:
+      - ./frontend:/app
+    command: npm run dev
 
 volumes:
   db_data:
